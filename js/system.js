@@ -1,15 +1,21 @@
 $(document).ready(function () {
 	/// MAIN JS CODE ///
 
-	window.Board = {
-		element			: $('#board') ,
-		board_top 		: $('#board_top') ,
-		board_bottom 	: $('#board_bottom')
+	window.Game = {
+		count_pieces : 15
 	}
 
-	// Выравниваем высоту верхней и нижней части доски
-	var board_height = Board.element.height();
-	Board.board_top.height(Board.element.height() / 2);
-	Board.board_bottom.height(Board.element.height() / 2)
+	window.Board = {
+		element	: $('#board')
+	}
 
+	$('.field').sortable({
+		 connectWith: '.field'
+	});
+	$('.field').disableSelection();
+
+	var height_pieces = Board.element.height() / Game.count_pieces;
+
+	$('.piece').height(height_pieces);
+	$('.piece').width(height_pieces);
 });

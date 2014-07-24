@@ -1,18 +1,44 @@
-body{background-color: #f6f6f6; font-family: tahoma, arial, verdana, sans-serif, Lucida Sans;}
+body{height: 100%; margin: 0px; padding: 0px; background-color: #f6f6f6}
 
+ul{margin:0; padding:0; list-style: none;}
+li{margin:0; padding:0;}
+
+/* доска */
 #board{
+	height:80%;
 	width: 80%;
-	border: 1px solid #ccc;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
 	margin: auto;
-	min-height: 300px;
 	background-color: #fff;
-	box-shadow: 0 0 10px rgba(0 , 0 , 0 , 0.5);
-	padding:0 10px 10px;
+	margin-top: 20px;
+	padding: 10px;
 }
 
-#board_top , #board_bottom {
-	width: 100%;
-	min-height: 50%;
+.field{height:50%; list-style: none; text-align: center;}
+
+/* нижние поля, разворачиваем */
+.bottom_field{
+	border: 1px solid green;
+}
+
+.bottom_field li{	
 	border: 1px dashed red;
-	margin-top: 10px;
+}
+
+.test{
+	display: table-cell;
+	bottom: 0px;
+}
+
+.line{float: left; width:8%; margin-left: 1px; border: 1px dashed #c6c6c6}
+
+.piece{
+	border-radius: 40px;
+	background-clip: padding-box;
+	box-shadow: 5px 5px 20px 5px rgba(0, 0, 0, 0.25);
+	width: 30px;
+	height: 30px;
+	margin: auto;	
+	background-color: rgba(31, 203, 240, 1);
+	position: relative;
 }
