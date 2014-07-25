@@ -18,15 +18,16 @@ li{margin:0; padding:0;}
 
 /* нижние поля, разворачиваем */
 .bottom_field{
-	border: 1px solid green;
+	
 }
 
-.bottom_field li{	
-	border: 1px dashed red;
+.empty_piece{
+	width: 30px;
+	height: 30px;
+	border: 1px dotted #c6c6c6;
 }
 
-.test{
-	display: table-cell;
+.test{	
 	bottom: 0px;
 }
 

@@ -10,7 +10,14 @@ $(document).ready(function () {
 	}
 
 	$('.field').sortable({
-		 connectWith: '.field'
+		 connectWith: '.field' ,
+		 stop : function(event , ui){
+
+		 	var parent 			= ui.item.parent('ul');
+		 	var count_elements 	= parent.find('li').length;
+		 	
+		 	parent.find('li .empty_piece:last').replaceWith(ui.item);
+		 }
 	});
 	$('.field').disableSelection();
 
