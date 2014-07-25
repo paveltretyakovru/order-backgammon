@@ -1,4 +1,10 @@
-body{height: 100%; margin: 0px; padding: 0px; background-color: #f6f6f6}
+body{
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	background-color: #f6f6f6;
+	background-image: url('../images/main_bg.jpg');
+}
 
 ul{margin:0; padding:0; list-style: none;}
 li{margin:0; padding:0;}
@@ -6,40 +12,62 @@ li{margin:0; padding:0;}
 /* доска */
 #board{
 	height:80%;
-	width: 80%;
-	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	width: 50%;
+	box-shadow: 0 0 10px rgba(0,0,0,1);
 	margin: auto;
-	background-color: #fff;
+	background-image: url('../images/board_bg1.jpg');
 	margin-top: 20px;
-	padding: 10px;
+	border: 2px solid #331900;
+	padding:5px;
 }
 
 .field{height:50%; list-style: none; text-align: center;}
 
 /* нижние поля, разворачиваем */
 .bottom_field{
-	
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: bottom;
+	background-image: url('../images/downtest.png')
+}
+
+.triangle_down{
+	background-size: contain;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: top;
+	background-image: url('../images/uptest.gif');
 }
 
 .empty_piece{
-	width: 30px;
-	height: 30px;
-	border: 1px dotted #c6c6c6;
+	border-radius 	: 43px;
+	background-clip	: padding-box;		
+	margin 	:auto;
+	
 }
 
-.test{	
-	bottom: 0px;
+.line{float: left; width:8%; margin-left: 0px;}
+.line_center{float: left; width:4%; height:100%; background-image: url('../images/board_bg1.jpg'); box-shadow: 2px 0px 1px 1px rgba(0, 0, 0, 0.50);}
+.line_center div{
+	height:100%;
+	
 }
 
-.line{float: left; width:8%; margin-left: 1px; border: 1px dashed #c6c6c6}
+.player1{
+	background-image: url('../images/down1.png');
+}
+
+.player2{
+	background-image: url('../images/2_player_bg.jpg');
+}
 
 .piece{
 	border-radius: 40px;
 	background-clip: padding-box;
-	box-shadow: 5px 5px 20px 5px rgba(0, 0, 0, 0.25);
+	box-shadow: 2px 2px 1px 1px rgba(0, 0, 0, 0.50);
 	width: 30px;
 	height: 30px;
-	margin: auto;	
-	background-color: rgba(31, 203, 240, 1);
+	margin: auto;
+	margin-top: 1px;
 	position: relative;
 }
