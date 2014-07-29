@@ -1,41 +1,93 @@
 $(document).ready(function(){
-	window.Board = {
-		shakeBones : function(access_params , event_params){
-			if('shake_bones' in access_params.params){
-				if(access_params.params.shake_bones === 1 || access_params.params.shake_bones === 2){
-					if(access_params.params.shake_bones === 1){
-						var chake_bone = $('#die1');
-						Game.player1.count_steps++;
 
-					}else{
-						var chake_bone = $('#die2');
-						Game.player2.count_steps++;
-					}
+	window.System = {
+		// метод вызывает методы других объектов
+		completeEvent : function(object , method , params){
+			// проверяем существование объекта обработчика
+			if(typeof(window[object]) === 'object'){
+				// проверяем существование метода в объекте обработчике
+				if(method in window[object] && typeof(window[object][method]) === 'function'){
+					// выполняем метод обработчик
+					var result = window[object][method](params);
+					return result;
+				}else{console.error("Метод " + method + " в объекте " + object + " не найден, либо не функция");} // if method in window[object]
+			}else{console.error("Объект " + object + " не найден");} // if window[object] === object
+		} ,
 
-					this.chake(chake_bone);
-					var roll = Math.floor(Math.random() * 6) + 1;
-					chake_bone.addClass("active").attr('data-value' , roll);
+		// генератор случайной строки
+		randWD : function (n){  // [ 2 ] random words and digits
+			return Math.random().toString(36).slice(2, 2 + Math.max(1, Math.min(n, 10)) );
+		}
+	};
 
-					switch(access_params.params.shake_bones){
-						case 1:
-							Game.addNewStep('shakeOneBone' , 'player1' , {shake_result : roll});
-						break;
-						case 2:
-							Game.addNewStep('shakeOneBone' , 'player2' , {shake_result : roll});
-						break;
-					}
-					
-					/*
-						for (var i = 1; i < 3; i++) {
-						var roll = Math.floor(Math.random() * 6) + 1;
-						$("div#die" + i).addClass("active").attr("data-value", roll);
-						// заносим значение костей в объект
-						Game.setBoneValue(i , roll);
-					}*/
+	window.Game = {
+		type : 'local' ,
+		status : 'Start' ,
+		
+		steps : {
+			player 	: [] ,
+			title	: [] ,
+			data 	: []
+		} ,
 
+		addStep : function(new_player , new_title , new_data){
+			if(new_player !== '' && new_title !== ''){
+				this.steps.player[this.steps.player.length] = new_player;
+				this.steps.title[this.steps.title.length] 	= new_title;
+				if(new_player === 'Player1'){
+					Player1.count_steps++;
 				}else{
-					console.error('Неизвестный порядковый номер кости');
+					Player2.count_steps++;
 				}
+			}else{console.error('Переданы пустые аргументы')}
+		}
+	};
+
+	window.Player1 = {
+		name : 'Player1' ,
+		count_steps : 0
+	};
+
+	window.Player2 = {
+		name : 'Player2' ,
+		count_steps : 0
+	};
+
+	window.Board = {
+		bone1 : $('#die1') ,
+		bone2 : $('#die2') ,
+
+		chakeBones : function(params){
+			switch(Game.type){
+				case 'local':
+					// Проверяем кидают ли игроки жребии
+					if(Player1.count_steps === 0){
+						// обновляем лог и заносим информацию игроками
+						Game.addStep('Player1' , 'throwlot');
+						// трясем кости
+						this.chake(this.bone1);
+						// генерируем случайное число
+						var roll = Math.floor(Math.random() * 6) + 1;
+						// отображаем на костях нужное количество точек
+						this.bone1.addClass("active").attr('data-value' , roll);
+						console.log('Игрок 1 кинул жребий');
+
+						return true;
+					}else if(Player2.count_steps === 0){
+						Game.addStep('Player2' , 'throwlot');
+						this.chake(this.bone2);
+						var roll = Math.floor(Math.random() * 6) + 1;
+						this.bone2.addClass("active").attr('data-value' , roll);
+						// оба игрока кинули жребий, меняем статус игры
+						Game.status = 'Game';
+						console.log('Игрок 2 кинул жребий');
+
+						return true;
+					// если жребий брошен, значит начинаем игру
+					}else if(Game.status === 'Game'){
+						alert('Start game :)');
+					}
+				break;
 			}
 		} ,
 
@@ -51,141 +103,10 @@ $(document).ready(function(){
 		}
 	};
 
-
-	window.System = {
-		eventsController : function(access_params , event_params){
-			console.log(access_params , event_params);
-			// Если событие запустили с параметром, который указывает, какой объект должен обрабатывать запрос
-			if('object' in event_params){
-				if('fun' in event_params){
-					if(typeof(window[event_params.object]) === 'object'){
-						console.info("Объект обработки события найден");
-						var obj = event_params.object;
-						var fun = event_params.fun;
-
-						window[obj][fun](access_params , event_params);
-					}else{
-						console.error("Не найден объект " + event_params.object + " для обработки события");
-					}
-				}
-			}
-		} ,
-
-		completeAction : function(action , params){
-			// проверяем, разрешена ли обработка события
-			var access = this.checkAccessAction(action);
-			if(access.allow){
-				var result = this.eventsController(access , params);
-			}else{ // событие запретили выполнять
-
-			}
-		} ,
-
-		checkAccessAction : function(action){
-			var return_data = {
-				allow : false ,
-				params : {}
-			};
-			// перечисление событий системы
-			switch(action){
-				// бросать кости
-				case 'chakeBones' :
-					var game_status = Game.getStatusGame();
-					switch(game_status){
-						case 'startGame':
-							if(Game.getCountSteps(1) === 0){
-								console.log('Бросает кубик, 1-й игрок');
-								return_data.allow = true;
-								return_data.params = {shake_bones : 1}
-							}else if(Game.getCountSteps(2) === 0){
-								console.log('Бросает кубик, 2-й игрок');
-								return_data.allow = true;
-								return_data.params = {shake_bones : 2}
-							}
-						break;
-					}
-				break;
-			}
-
-			return return_data;
-		}
-	};	
-
-	window.Game = {
-		game_status : "startGame" ,
-
-		steps : {
-			title_step : [] , 	// array of string
-			stepsUser	: [] , 	// array of string
-			data 		: []	// array of object
-		} ,
-
-		stroke : {
-			bone1 : '' ,
-			bone2 : ''
-		} ,
-
-		player1 : {
-			count_steps : 0
-		} ,
-
-		player2 : {
-			count_steps : 0
-		} ,	
-
-		getStatusGame : function(){
-			return this.game_status;
-		} ,
-		getCountSteps : function(num_player){
-			if(num_player === 1){
-				return this.player1.count_steps;
-			}else{
-				return this.player2.count_steps;
-			}
-		} ,
-
-		addNewStep : function(new_title_step , new_stepsUser ,  new_data){
-			if(void 0 !== new_title_step && void 0 !== new_stepsUser){
-				if(this.steps.title_step !== 0){
-					this.steps.title_step[this.steps.title_step.length] = new_title_step;
-					this.steps.stepsUser[this.steps.title_step.length] = new_stepsUser;
-					if(typeof(new_data) === 'object'){
-						this.steps.data[this.steps.title_step.length] = new_data;
-					}else{
-						this.steps.data[this.steps.title_step.length] = false;
-					}
-
-					console.info('New system step. ' + new_stepsUser + ' doing ' + new_title_step + ' with data: ' , new_data);
-				}else{
-					this.steps.title_step[0] 	= new_title_step;
-					this.steps.stepsUser[0]		= new_stepsUser;
-				}
-			}
-		}
-
-	};
-
-
-	$('.bottom_field , .top_field').sortable({
-		connectWith : '.bottom_field , .top_field' ,
-	});
-	$('.bottom_field , .top_field').disableSelection();
-
-	
-	// трясем кости :)
+	// Кидаем кости
 	$('div.die').click(function(){
-		System.completeAction('chakeBones' , {object : 'Board' , fun : 'shakeBones'});
+		// Вызываем метод кидающий кости
+		System.completeEvent('Board' , 'chakeBones' , {shakeSelector : $(this)});		
 	});
 
-
-
-	jQuery.fn.shake = function() {
-	    this.each(function(i) {
-		    var left = $(this).position().left;
-	        for (var x = 1; x <= 2; x++) {
-	            $(this).animate({ left: left-25 }, 10).animate({ left: left }, 50).animate({ left: left + 25 }, 10).animate({ left: left }, 50);
-	        }
-	    });
-	    return this;
-	}
 });
