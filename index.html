@@ -1,225 +1,257 @@
 <html>
-	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf8" />
+<head>
+	<!-- HEADERS -->
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-		<title>Нарды</title>
-		<!-- подключение сторонних библиотек -->
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
-		<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+	<title>Нарды - версия "абсолютное позицианирование"</title>
 
-		<!-- подключения из каталогов, павел -->
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<script type="text/javascript" src="js/system.js"></script>
+	<!-- Подключение сторонних библиотек -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">  
+  	<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 
-	</head>
-	
-	<body>
-		<body>
-		<div id="board">
-			<ul class='line' id='test'>
-				<li>
-					<ul class='field triangle_down' data-field_id='12'>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>
-						<li><div class='piece player1'></div></li>					
-					</ul>
-				</li>
+	<!-- Свои подключения -->
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script type="text/javascript" src="js/system.js"></script>
+
+</head>
+<body>
+
+
+	<!-- таблица для оформления фона доски -->
+	<table id='fon_table' class='main_table' cellpadding='0' cellspacing='0'>
+		<tr>
+			<td colspan='3' class='dop_top'><!-- dop_top  --></td>
+		</tr>
+		<tr>
+			<td class='dop_left'	id='dop_left_fon'><!-- dop left --></td> <!-- дополнильное поле -->
+
+			<!-- главное поле игровой доски -->
+			<td>
+			<table class='main_board_table' id='main_board_table_fon'  cellpadding='0' cellspacing='0'>
+				<tr>
+					<td rowspan='4'		class='board_left'	id='board_left_fon'></td>	<!-- левая рамка доски-->
+					<td colspan='13' 	class='board_top'	id='board_top_fon'></td>	<!-- верхняя рамка доски -->
+					<td rowspan='4' 	class='board_right' id='board_right_fon'></td>	<!-- правая рамка доски -->
+				</tr>
 				
-				<li>
-					<ul class='field bottom_field' data-field_id='13'>
-						
-					</ul>
-				</li>
-			</ul>
-
-			<ul class='line'>
-				<li>
-					<ul class='field triangle_down' data-field_id='11'>
-						
-					</ul>
-				</li>
+					<tr class='top_fields' valign='top' align='center' id='top_fields_fon'><!-- верхние поля игровой доски -->
+						<td class='top_field_fon'><!-- 12 --></td>
+						<td class='top_field_fon'><!-- 11 --></td>
+						<td class='top_field_fon'><!-- 10 --></td>
+						<td class='top_field_fon'><!-- 9 --></td>
+						<td class='top_field_fon'><!-- 8 --></td>
+						<td class='top_field_fon'><!-- 7 --></td>
+						<td rowspan='2' class='center_line'></td> <!-- center board -->
+						<td class='top_field_fon'><!-- 6 --></td>
+						<td class='top_field_fon'><!-- 5 --></td>
+						<td class='top_field_fon'><!-- 4 --></td>
+						<td class='top_field_fon'><!-- 3 --></td>
+						<td class='top_field_fon'><!-- 2 --></td>
+						<td class='top_field_fon'><!-- 1 --></td>
+					</tr>
+					<tr class='bottom_fields' valign='bottom' align='center' id='bottom_fields_fon'><!-- нижние поля игровой доски -->
+						<td class='bottom_field_fon'><!-- 12 --></td>
+						<td class='bottom_field_fon'><!-- 13 --></td>
+						<td class='bottom_field_fon'><!-- 14 --></td>
+						<td class='bottom_field_fon'><!-- 15 --></td>
+						<td class='bottom_field_fon'><!-- 16 --></td>
+						<td class='bottom_field_fon'><!-- 17 --></td>
+						<!-- center -->
+						<td class='bottom_field_fon'><!-- 18 --></td>
+						<td class='bottom_field_fon'><!-- 19 --></td>
+						<td class='bottom_field_fon'><!-- 20 --></td>
+						<td class='bottom_field_fon'><!-- 21 --></td>
+						<td class='bottom_field_fon'><!-- 22 --></td>
+						<td class='bottom_field_fon'><!-- 23 --></td>
+					</tr>
+				<tr>
+					<td colspan='13' class='board_bottom' id='board_bottom_fon'></td>	<!-- нижняя рамка доски -->
+				</tr>
 				
-				<li>
+			</table>
+			</td>
+			<!-- -->
 
-					<ul class='field bottom_field' data-field_id='14'>
-						
-					</ul>
-					
-				</li>
-			</ul>
+			<td class='dop_right'	id='dop_right_fon'><!--  dop right --> </td>	<!-- дополнительное правое поле -->
+		</tr>		
+		
+		<tr>
+			<td colspan='3' class='dop_bottom' id='dop_bottom_fon'><!--  dop bottom --></td>	<!-- нижнее дополнительное поле -->
+		</tr>
 
-			<ul class='line'>
-				<li>
-					<ul class='field triangle_down' data-field_id='10'>
-						
-					</ul>
-				</li>
+	</table>
+
+
+	<!-- таблица для оформления фона доски -->
+	<table id='board_table' class='main_table' cellpadding='0' cellspacing='0'>
+		<tr>
+			<td colspan='3' class='dop_top'><!--   dop_top --></td>
+		</tr>
+		<tr>
+			<td class='dop_left'	id='dop_left_board'><!-- dop left --></td>	<!-- дополнильное поле -->
+
+			<!--  -->
+			<td>
+			<table class='main_board_table' id='main_board_table_board' cellpadding='0' cellspacing='0'>
+				<tr>
+					<td rowspan='4'		class='board_left'	id='board_left_board'></td>		<!-- левая рамка доски-->
+					<td colspan='13' 	class='board_top'	id='board_top_board'></td>		<!-- верхняя рамка доски -->
+					<td rowspan='4' 	class='board_right' id='board_right_board'></td>	<!-- правая рамка доски -->
+				</tr>
 				
-				<li>
-					<ul class='field bottom_field' data-field_id='15'>
-						
-					</ul>
-				</li>
-			</ul>
+					<tr class='top_fields' valign='top' align='center' id='top_fields_board'><!-- верхние поля игровой доски -->
+						<td class='top_field' data-fieldid='12'><!-- 12 --></td>
+						<td class='top_field' data-fieldid='11'><!-- 11 --></td>
+						<td class='top_field' data-fieldid='10'><!-- 10 --></td>
+						<td class='top_field' data-fieldid='9'><!-- 9 --></td>
+						<td class='top_field' data-fieldid='8'><!-- 8 --></td>
+						<td class='top_field' data-fieldid='7'><!-- 7 --></td>
+						<td rowspan='2' class='center_line_board'></td> <!-- center board -->
+						<td class='top_field' data-fieldid='6'><!-- 6 --></td>
+						<td class='top_field' data-fieldid='5'><!-- 5 --></td>
+						<td class='top_field' data-fieldid='4'><!-- 4 --></td>
+						<td class='top_field' data-fieldid='3'><!-- 3 --></td>
+						<td class='top_field' data-fieldid='2'><!-- 2 --></td>
+						<td class='top_field start_player_2' data-fieldid='1'>
 
-			<ul class='line'>
-				<li>
-					<ul class='field triangle_down' data-field_id='9'>
-						
-					</ul>
-				</li>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+							<figure class='piece player2'></figure>
+
+						</td>
+					</tr>
+					<tr class='bottom_fields' valign='bottom' align='center' id='bottom_fields_board'><!-- нижние поля игровой доски -->
+						<td class='bottom_field' data-fieldid='12'>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+							<figure class='piece player1'></figure>
+						</td>
+						<td class='bottom_field' data-fieldid='13'><!-- 13 --></td>
+						<td class='bottom_field' data-fieldid='14'><!-- 14 --></td>
+						<td class='bottom_field' data-fieldid='15'><!-- 15 --></td>
+						<td class='bottom_field' data-fieldid='16'><!-- 16 --></td>
+						<td class='bottom_field' data-fieldid='17'><!-- 17 --></td>
+						<!-- center -->
+						<td class='bottom_field' data-fieldid='18'><!-- 18 --></td>
+						<td class='bottom_field' data-fieldid='19'><!-- 19 --></td>
+						<td class='bottom_field' data-fieldid='20'><!-- 20 --></td>
+						<td class='bottom_field' data-fieldid='21'><!-- 21 --></td>
+						<td class='bottom_field' data-fieldid='22'><!-- 22 --></td>
+						<td class='bottom_field' data-fieldid='23'><!-- 23 --></td>
+					</tr>
+				<tr>
+					<td colspan='13' class='board_bottom' id='board_bottom_board'></td>		<!-- нижняя рамка доски -->
+				</tr>
 				
-				<li>
-					<ul class='field bottom_field' data-field_id='16'>
-						
-					</ul>
-				</li>
-			</ul>
+			</table>
+			</td>
+			<!-- -->
 
-			<ul class='line'>
-				<li>
-					<ul class='field triangle_down' data-field_id='8'>
-						
-					</ul>
-				</li>
-				
-				<li>
-					<ul class='field bottom_field' data-field_id='17'>
-						
-					</ul>
-				</li>
-			</ul>
+			<td class='dop_right'	id='dop_right_board'><!-- dop right --></td>	<!-- дополнительное правое поле -->
+		</tr>		
+		
+		<tr>
+			<td colspan='3' class='dop_bottom' id='dop_bottom_board'><!-- dop bottom --></td>	<!-- нижнее дополнительное поле -->
+		</tr>
 
-			<ul class='line'>
-				<li>
-					<ul class='field triangle_down' data-field_id='7'>
-						
-					</ul>
-				</li>
-				
-				<li>
-					<ul class='field bottom_field' data-field_id='18'>
-						
-					</ul>
-				</li>
-			</ul>
+	</table>
 
-			<ul class='line_center'><li>
-				<div></div>
-			</li></ul>
 
-			<ul class='line'>
-				<li>
-					<ul class='field triangle_down'  data-field_id='6'>
-						
-					</ul>
-				</li>
-				
-				<li>
-					<ul class='field bottom_field' data-field_id='19'>
-						
-					</ul>
-				</li>
-			</ul>
+	<div class="die" id="die1">
+					<div class="face" data-id="1">
+						<div class="pip center middle"></div>
+					</div>
+					<div class="face" data-id="2">
+						<div class="pip top right"></div>
+						<div class="pip bottom left"></div>
+					</div>
+					<div class="face" data-id="3">
+						<div class="pip top left"></div>
+						<div class="pip center middle"></div>
+						<div class="pip bottom right"></div>
+					</div>
+					<div class="face" data-id="4">
+						<div class="pip top left"></div>
+						<div class="pip bottom left"></div>
+						<div class="pip top right"></div>
+						<div class="pip bottom right"></div>
+					</div>
+					<div class="face" data-id="5">
+						<div class="pip top left"></div>
+						<div class="pip bottom left"></div>
+						<div class="pip center middle"></div>
+						<div class="pip top right"></div>
+						<div class="pip bottom right"></div>
+					</div>
+					<div class="face" data-id="6">
+						<div class="pip top left"></div>
+						<div class="pip middle left"></div>
+						<div class="pip bottom left"></div>
+						<div class="pip top right"></div>
+						<div class="pip middle right"></div>
+						<div class="pip bottom right"></div>
+					</div>
+				</div>
+				<div class="die" id="die2">
+					<div class="face" data-id="1">
+						<div class="pip center middle"></div>
+					</div>
+					<div class="face" data-id="2">
+						<div class="pip top right"></div>
+						<div class="pip bottom left"></div>
+					</div>
+					<div class="face" data-id="3">
+						<div class="pip top left"></div>
+						<div class="pip center middle"></div>
+						<div class="pip bottom right"></div>
+					</div>
+					<div class="face" data-id="4">
+						<div class="pip top left"></div>
+						<div class="pip bottom left"></div>
+						<div class="pip top right"></div>
+						<div class="pip bottom right"></div>
+					</div>
+					<div class="face" data-id="5">
+						<div class="pip top left"></div>
+						<div class="pip bottom left"></div>
+						<div class="pip center middle"></div>
+						<div class="pip top right"></div>
+						<div class="pip bottom right"></div>
+					</div>
+					<div class="face" data-id="6">
+						<div class="pip top left"></div>
+						<div class="pip middle left"></div>
+						<div class="pip bottom left"></div>
+						<div class="pip top right"></div>
+						<div class="pip middle right"></div>
+						<div class="pip bottom right"></div>
+					</div>
+				</div>
 
-			<ul class='line'>
-				<li>
-					<ul class='field triangle_down'  data-field_id='5'>
-						
-					</ul>
-				</li>
-				
-				<li>
-					<ul class='field bottom_field'  data-field_id='20'>
-						
-					</ul>
-				</li>
-			</ul>
-
-			<ul class='line'>
-				<li>
-					<ul class='field triangle_down'  data-field_id='4'>
-						
-					</ul>
-				</li>
-				
-				<li>
-					<ul class='field bottom_field'  data-field_id='21'>
-						
-					</ul>
-				</li>
-			</ul>
-
-			<ul class='line'>
-				<li>
-					<ul class='field triangle_down'  data-field_id='3'>
-						
-					</ul>
-				</li>
-				
-				<li>
-					<ul class='field bottom_field'  data-field_id='22'>
-						
-					</ul>
-				</li>
-			</ul>
-
-			<ul class='line'>
-				<li>
-					<ul class='field triangle_down'  data-field_id='2'>
-						
-					</ul>
-				</li>
-				
-				<li>
-					<ul class='field bottom_field'  data-field_id='23'>
-						
-					</ul>
-				</li>
-			</ul>
-
-			<ul class='line'>
-				<li>
-					<ul class='field triangle_down'  data-field_id='1'>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-						<li><div class='piece player2'></div></li>
-					</ul>
-				</li>
-				
-				<li>
-					<ul class='field bottom_field'  data-field_id='24'>
-						
-					</ul>
-				</li>
-			</ul>
-
-		</div>
-
-	</body>
-
-<html>
+</body>
+</html>

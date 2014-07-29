@@ -1,73 +1,137 @@
-body{
-	height: 100%;
+body{background-image: url('../images/main_bg.jpg');}
+
+table , ul , li{margin:0px;	padding: 0px;}
+ul{list-style: none}
+
+.main_table{
+	width:62%;
+	height: 95%;
+	left: 20%;
+}
+
+.main_table td , .main_table tr{
 	margin: 0px;
 	padding: 0px;
-	background-color: #f6f6f6;
-	background-image: url('../images/main_bg.jpg');
 }
 
-ul{margin:0; padding:0; list-style: none;}
-li{margin:0; padding:0;}
-
-/* доска */
-#board{
-	height:80%;
-	width: 50%;
-	box-shadow: 0 0 10px rgba(0,0,0,1);
-	margin: auto;
-	background-image: url('../images/board_bg1.jpg');
-	margin-top: 20px;
-	border: 2px solid #331900;
-	padding:5px;
-}
-
-.field{height:50%; list-style: none; text-align: center;}
-
-/* нижние поля, разворачиваем */
-.bottom_field{
-	background-size: contain;
-	background-repeat: no-repeat;
+#main_board_table_fon{
+	background-image: url('../images/board_bg.jpg');
 	background-position: bottom;
-	background-image: url('../images/downtest.png')
 }
 
-.triangle_down{
-	background-size: contain;
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: top;
-	background-image: url('../images/uptest.gif');
-}
+/* дополнительные поля на всякий случай */
+.dop_top , .dop_bottom{height:20px;}
+.dop_left , .dop_right{width: 20px;}
 
-.empty_piece{
-	border-radius 	: 43px;
-	background-clip	: padding-box;		
-	margin 	:auto;
-	
-}
+/* рамки доски */
+.board_top  , .board_bottom{height: 20px;}
+.board_left , .board_right{width: 20px}
 
-.line{float: left; width:8%; margin-left: 0px;}
-.line_center{float: left; width:4%; height:100%; background-image: url('../images/board_bg1.jpg'); box-shadow: 2px 0px 1px 1px rgba(0, 0, 0, 0.50);}
-.line_center div{
+/* средняя линия доски */
+/*.center_line{width:20px;} */
+
+.main_board_table{	
+	width: 100%;
 	height:100%;
-	
 }
 
-.player1{
-	background-image: url('../images/down1.png');
+	/* поля доски */
+	.top_field , .bottom_field , .top_field_fon , .bottom_field_fon {
+		width: 8%;
+	}
+
+	.top_field_fon , .bottom_field_fon {
+		background-repeat: no-repeat;
+		background-size: contain;
+	}
+
+		.top_field_fon{
+			background-image: url('../images/down_treangle_wood.png');
+			background-position: top;		
+		}
+
+		.bottom_field_fon{
+			background-image: url('../images/up_treangle_wood.png');		
+			background-position: bottom;
+		}
+
+#fon_table{
+	position: absolute;
 }
 
-.player2{
-	background-image: url('../images/2_player_bg.jpg');
+#board_table{
+	position: absolute;
+}
+
+/* добавляем объемность доске */
+#board_left_fon , #board_top_fon , #board_right_fon , #board_bottom_fon, .center_line{	
+	background-image: url('../images/board_bg.jpg');
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	border: 1px solid #422008;
 }
 
 .piece{
-	border-radius: 40px;
-	background-clip: padding-box;
-	box-shadow: 2px 2px 1px 1px rgba(0, 0, 0, 0.50);
-	width: 30px;
-	height: 30px;
-	margin: auto;
-	margin-top: 1px;
-	position: relative;
+	color: #fff;
+	cursor: pointer;
+	display: block;
+  	background-color: white;
+  	border-radius: 50%;  	
+  	width: 37px;
+  	height:37px;
+  	margin: 0;
+  	margin-bottom: 1px;
+  	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  	 	
 }
+	.player1{
+		/* дополнительные параметры для фишек разных игроков */
+		background: -webkit-radial-gradient(10px 10px, circle, #E8B799, #000);
+  		background: -moz-radial-gradient(10px 10px, circle, #E8B799, #000);
+  		background: radial-gradient(10px 10px, circle, #E8B799, #000);
+	}
+
+	.player2{
+		/* дополнительные параметры для фишек разных игроков */
+		background: -webkit-radial-gradient(10px 10px, circle, #5C361F, #000);
+  		background: -moz-radial-gradient(10px 10px, circle, #5C361F, #000);
+  		background: radial-gradient(10px 10px, circle, #5C361F, #000);
+	}
+
+	.start_player_2{
+		position: absolute;
+	}
+
+div.die{
+	width:50px;
+	height:50px;
+	background-color:#eeeeee;
+	-webkit-box-shadow:5px 5px 20px 5px rgba(0, 0, 0, 0.25);
+	-moz-box-shadow:5px 5px 20px 5px rgba(0, 0, 0, 0.25);
+	box-shadow:5px 5px 20px 5px rgba(0, 0, 0, 0.25);
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;border-radius:5px;
+	-moz-background-clip:padding;
+	-webkit-background-clip:padding-box;
+	background-clip:padding-box;
+	position:absolute;
+	top:45%;
+	cursor:pointer;
+	-webkit-opacity:0.5;
+	-moz-opacity:0.5;
+	opacity:0.5;
+}
+div.die.active{-webkit-opacity:1;-moz-opacity:1;opacity:1;}
+div.die#die1{left:55%;}
+div.die#die2{left:60%;}
+div.die[data-value="1"] div.face[data-id="1"]{display:block;}
+div.die[data-value="2"] div.face[data-id="2"]{display:block;}
+div.die[data-value="3"] div.face[data-id="3"]{display:block;}
+div.die[data-value="4"] div.face[data-id="4"]{display:block;}
+div.die[data-value="5"] div.face[data-id="5"]{display:block;}
+div.die[data-value="6"] div.face[data-id="6"]{display:block;}
+div.die div.face{display:none;}div.die div.face div.pip{width:10px;height:10px;background-color:#222222;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box;position:absolute;}div.die div.face div.pip.left{left:7.5px;}
+div.die div.face div.pip.center{left:20px;}
+div.die div.face div.pip.right{right:7.5px;}
+div.die div.face div.pip.top{top:7.5px;}
+div.die div.face div.pip.middle{top:20px;}
+div.die div.face div.pip.bottom{bottom:7.5px;}

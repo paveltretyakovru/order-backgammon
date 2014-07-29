@@ -1,74 +1,128 @@
-$(document).ready(function () {
-	/// MAIN JS CODE ///
+$(document).ready(function(){
+	window.System = {
+		completeAction : function(action , params){
+			var access = this.checkAccessAction(action);
+			if(access.allow){
+
+			}else{ // событие запретили выполнять
+
+			}
+		} ,
+
+		checkAccessAction : function(action){
+			var return_data = {
+				allow : false ,
+				params : {}
+			};
+			switch(action){
+				case 'chakeBones' :
+					var game_status = Game.getStatusGame();
+					switch(game_status){
+						case 'startGame':
+							if(Game.getCountSteps(1) === 0){
+								return_data.allow = true;
+								return_data.params = {shake_bones : 1}
+							}else if(Game.getCountSteps(2) === 0){
+								return_data.allow = true;
+								return_data.params = {shake_bones : 2}
+							}
+						break;
+					}
+				break;
+			}
+		}
+	};
 
 	window.Game = {
-		count_pieces : 15	// количество шашек
-	}
+		game_status : "startGame" ,
 
-	window.Board = {
-		empty_piece_html : "<li><div class='empty_piece'> </div></li>" ,
-
-		element	: $('#board') ,
-		
-		// Изменяем размер шашек
-		setPiecesSize : function(){
-			// размер шашек = высота доски / количество шашек
-			var size = this.element.height() / Game.count_pieces - 1;
-			
-			$('.piece').height(size).width(size);
-
-			return size;
+		stroke : {
+			bone1 : '' ,
+			bone2 : ''
 		} ,
-		// Вставляем пустые шашки на нижнюю часть доски
-		inputEmptyPieces : function(){
-			// Вычисляем необходимое количество фишек для нижнего поля доски
-			var need_count_pieces = Math.floor(Game.count_pieces / 2);
-			// Поля для фишек на нижней части доски
-			var bottom_fields = $('.bottom_field');
 
-			bottom_fields.each(function(index , element){
-				var count_pieces = 0;
-				var fields_elements = $(this).find('li');
-				// проверяем есть ли вообще шашки на поле
-				if(fields_elements.length > 0){
-					count_pieces = need_count_pieces - fields_elements.length;
-				}else{
-					count_pieces = need_count_pieces;
-				}
+		player1 : {
+			count_steps : 0
+		} ,
 
-				for(var i = 0; i < count_pieces; i++){
-					$(this).prepend(Board.empty_piece_html);
-				}
-			});
-			
-			var count_pieces = Game.count_pieces / 2;
+		player2 : {
+			count_steps : 0
+		} ,
+
+		// функция трясет кости
+		chake : function(bonesSelector){
+			bonesSelector.each(function(i) {
+			    var left = $(this).position().left;
+		        for (var x = 1; x <= 2; x++) {
+		            $(this).animate({ left: left-25 }, 10).animate({ left: left }, 50).animate({ left: left + 25 }, 10).animate({ left: left }, 50);
+		        }
+	    	});
+	    	return bonesSelector;
+		} ,
+
+		getStatusGame : function(){
+			return this.game_status;
+		} ,
+		getCountSteps : function(num_player){
+			if(num_player === 1){
+				return this.player1.count_steps;
+			}else{
+				return this.player2.count_steps;
+			}
 		}
-	}
+	};
 
-	// Делаем пешки перемещаемыми
-	$('.field').sortable({
-		placeholder	:'ui-state-highlight' ,
-		connectWith	: '.field' ,
-		items:"li:not(.empty_piece)" ,
-		cancel:"li.empty_piece" ,
-		stop 		: function(event , ui){
 
-		 	var parent 			= ui.item.parent('ul');
-		 	var count_elements 	= parent.find('li').length;
-		 	
-		 	// при добавлении новоой шашки на поле, удаляем пустой элемент
-			if(ui.item.find('div:first').attr('class') !== 'empty_piece'){
-				parent.find('li .empty_piece:last').replaceWith(ui.item)
-			};
-		}
+	$('.bottom_field , .top_field').sortable({
+		connectWith : '.bottom_field , .top_field' ,
 	});
-	$('.field').disableSelection();
+	$('.bottom_field , .top_field').disableSelection();
 
-	// Изменяем размер шашек
-	var elements_size = Board.setPiecesSize();
-	// Вставляем пустые шашки на нижние поля
-	Board.inputEmptyPieces();
-
-	$('.empty_piece').height(elements_size  + 3 ).width(elements_size + 3);
 	
+	// трясем кости :)
+	$('div.die').click(function(){
+
+
+		
+
+		// смотрим статус игры
+		/*var game_status = Game.getStatusGame();
+
+		if(game_status === 'startGame'){
+			if(Game.player1.count_steps === 0){
+				Game.chake($('#die1'));
+				var roll = Math.floor(Math.random() * 6) + 1;
+				$('div#die1').addClass("active").attr('data-value' , roll);
+				Game.player1.count_steps++;
+			}else{
+				Game.chake($('#die2'));
+				var roll = Math.floor(Math.random() * 6) + 1;
+				$('div#die2').addClass("active").attr('data-value' , roll);
+				Game.player2.count_steps++;
+			}
+		}*/
+
+		/*
+		for (var i = 1; i < 3; i++) {
+			var roll = Math.floor(Math.random() * 6) + 1;
+			$("div#die" + i).addClass("active").attr("data-value", roll);
+			// заносим значение костей в объект
+			Game.setBoneValue(i , roll);
+		}
+		// выполняем действие
+		Game.completeStep();
+		*/
+	});
+
+
+
+	jQuery.fn.shake = function() {
+	    this.each(function(i) {
+		    var left = $(this).position().left;
+	        for (var x = 1; x <= 2; x++) {
+	            $(this).animate({ left: left-25 }, 10).animate({ left: left }, 50).animate({ left: left + 25 }, 10).animate({ left: left }, 50);
+	        }
+	    });
+	    return this;
+	}
 });
