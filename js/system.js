@@ -1,7 +1,17 @@
 $(document).ready(function(){
 
-	$('.top_field , .bottom_field').sortable({
-		connectWith : '.top_field , .bottom_field'
+	$('.bottom_field').sortable({
+		connectWith : '.top_field , .bottom_field' ,
+		items : 'figure:first' ,
+		containment : '#main_board_table_board' ,
+		revert : 1000
+	}).disableSelection();
+
+	$('.top_field').sortable({
+		connectWith : '.top_field , .bottom_field' ,
+		items : 'figure:last' ,
+		containment : '#main_board_table_board' ,
+		revert : 1000
 	}).disableSelection();
 
 	window.System = {
@@ -133,9 +143,17 @@ $(document).ready(function(){
 
 		setPlayerActiv : function(player){
 			if(player === 'Player1'){
-								
+				$('.player1').parent('td').css('border' , 'none');
+				//$('.player2').parent('td').css('border' , '1px solid green');
+
+				$('.player1').parent('td').sortable('enable');
+				$('.player2').parent('td').sortable('disable');
 			}else{
-				
+				$('.player2').parent('td').css('border' , 'none');
+				//$('.player1').parent('td').css('border' , '1px solid red');
+
+				$('.player2').parent('td').sortable('enable');
+				$('.player1').parent('td').sortable('disable');
 			}
 		} ,
 
