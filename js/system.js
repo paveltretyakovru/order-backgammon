@@ -128,161 +128,148 @@ $(document).ready(function(){
 		} ,
 
 		setPlayerActiv : function(player){
+
+
+			///////////////////////////////////////////////////
+			function activation(player_num , enemy_num){
+						// уничтожаем старые sortable, в том числе и у противника
+							$('.field').each(function(index , element){
+								var  field = $(element);
+								if(field.hasClass('ui-sortable')){
+									field.css('border' , 'none').sortable('destroy');
+								}
+							});
+			
+							// перебираем поля, на которых стоят свои фишки
+							$('.field:has(.player' + player_num + ')').each(function(index , element){
+								var field = $(element);
+			
+								var can = field.attr('data-fieldid') - (Board.bone1_val + Board.bone2_val);
+								if(can< 0){
+									can = 24 - can;
+									if(can === 0){
+										can = 24;
+									}
+								}
+			
+								// если на возможном поле стоят фишки соперника, убираем возможность ставить на них фишки
+								if($('.field[data-fieldid=' + can + ']').find('figure').hasClass('player' + enemy_num)){
+									can = false;
+								}
+			
+								// вычисляем поля, на которые может сходить игрок
+								var can1 = field.attr('data-fieldid') - Board.bone1_val;					
+								// делаем возможным перемищение фишек по кругу
+								if(can1 < 0){
+									can1 = 24 + can1;
+									if(can1 === 0){
+										can1 = 24;
+									}
+								}
+			
+								// если на возможном поле стоят фишки соперника, убираем возможность ставить на них фишки
+								if($('.field[data-fieldid=' + can1 + ']').find('figure').hasClass('player' + enemy_num)){
+									can1 = false;
+								}
+			
+								var can2 = field.attr('data-fieldid') - Board.bone2_val;
+								if(can2 < 0){
+									can2 = 24 + can2;
+									if(can2 === 0){
+										can2 = 24;
+									}
+								}
+								if($('.field[data-fieldid=' + can2 + ']').find('figure').hasClass('player' + enemy_num)){									
+									can2 = false;
+								}
+			
+								console.log('data-fieldid: ' + field.attr('data-fieldid') + '; can1=' + can1 + '; can2=' + can2);
+								console.log('bone1=' + Board.bone1_val + '; bone2=' + Board.bone2_val);
+			
+								// переменная будет хранить строку, в которой указано - с какими полями может коннектиться поле
+								var canConnect = '';
+			
+								// вычесленные поля делаем активными
+								if(can){						
+									canConnect += '.field[data-fieldid=' + can + ']';
+								}					
+								if(can1){						
+									if(can){
+										canConnect += ' , .field[data-fieldid=' + can1 + ']';	
+									}else{
+										canConnect += '.field[data-fieldid=' + can1 + ']';}
+								}
+								if(can2){						
+									if(can1 || can){										
+										canConnect += ' , .field[data-fieldid=' + can2 + ']';
+										console.log(canConnect);
+
+									}else{
+										canConnect += '.field[data-fieldid=' + can2 + ']';
+									}
+								}
+			
+								// функция делает возможные поля сортируемыми
+								// и соеденненными между собой
+								function canFun(idfiled , connect){
+									var canfield = $('.field[data-fieldid=' + idfiled +']');
+									if(canfield.hasClass('top_field')){
+										canfield.css('border' , '1px solid red').sortable({
+										connectWith : connect ,
+										containment : '#main_board_table_board' ,
+										items		: 'figure:last' ,
+										revert : 1000
+										});
+									}else{
+										canfield.css('border' , '1px solid red').sortable({
+											connectWith : connect ,
+											containment : '#main_board_table_board' ,
+											items		: 'figure:first' ,
+											revert 		: 1000 ,
+											start 		: function(event , ui){
+												
+											}
+										});
+									}
+								}
+			
+			
+								if(can){
+									canFun(can , canConnect);
+								}
+								if(can1){
+									canFun(can1 , canConnect);
+								}
+								if(can2){
+									canFun(can2 , canConnect);
+								}			
+			
+								// перебираемые поля с фишками игрока делаем так же активными
+								// условие делает активными - только крайние фишки
+								if(field.hasClass('top_field')){
+									field.sortable({
+										connectWith : canConnect ,
+										containment : '#main_board_table_board' ,
+										items		: 'figure:last' ,
+										revert : 1000
+									});
+								}else{
+									field.sortable({
+										connectWith : canConnect ,
+										containment : '#main_board_table_board' ,
+										items		: 'figure:first' ,
+										revert : 1000
+									});
+								}
+							});
+			
+			}
+			////////////////////////////////////////////////////
+
 			if(player === 'Player1'){
-				// уничтожаем старые sortable, в том числе и у противника
-				$('.field').each(function(index , element){
-					var  field = $(element);
-					if(field.hasClass('ui-sortable')){
-						field.css('border' , 'none').sortable('destroy');
-					}
-				});
-
-				// перебираем поля, на которых стоят свои фишки
-				$('.field:has(.player1)').each(function(index , element){
-					var field = $(element);
-
-					// вычисляем поля, на которые может сходить игрок
-					var can1 = field.attr('data-fieldid') - Board.bone1_val;					
-					// делаем возможным перемищение фишек по кругу
-					if(can1 < 0){
-						can1 = 24 + can1;
-						if(can1 === 0){
-							can1 = 24;
-						}
-					}
-
-					// если на возможном поле стоят фишки соперника, убираем возможность ставить на них фишки
-					if($('.field[data-fieldid=' + can1 + ']').find('figure').hasClass('player2')){
-						can1 = false;
-					}
-
-					var can2 = field.attr('data-fieldid') - Board.bone2_val;
-					if(can2 < 0){
-						can2 = 24 + can2;
-						if(can2 === 0){
-							can2 = 24;
-						}
-					}
-					if($('.field[data-fieldid=' + can2 + ']').find('figure').hasClass('player2')){
-						can2 = false;
-					}
-
-					console.log('data-fieldid: ' + field.attr('data-fieldid') + '; can1=' + can1 + '; can2=' + can2);
-					console.log('bone1=' + Board.bone1_val + '; bone2=' + Board.bone2_val);
-
-					// переменная будет хранить строку, в которой указано - с какими полями может коннектиться поле
-					var canConnect = '';
-
-					// вычесленные поля делаем активными
-					if(can1){
-						$('.field[data-fieldid=' + can1 + ']').css('border' , '1px solid #543125').sortable();
-						canConnect = '.field[data-fieldid=' + can1 + ']';
-					}
-					if(can2){
-						$('.field[data-fieldid=' + can2 + ']').css('border' , '1px solid #543125').sortable();
-						if(can1){
-							canConnect += ' , .field[data-fieldid=' + can2 + ']';
-						}else{
-							canConnect += '.field[data-fieldid=' + can2 + ']';
-						}
-					}
-
-					// перебираемые поля с фишками игрока делаем так же активными
-					// условие делает активными - только крайние фишки
-					if(field.hasClass('top_field')){
-						field.sortable({
-							connectWith : canConnect ,
-							containment : '#main_board_table_board' ,
-							items		: 'figure:last' ,
-							revert : 1000
-						});
-					}else{
-						field.sortable({
-							connectWith : canConnect ,
-							containment : '#main_board_table_board' ,
-							items		: 'figure:first' ,
-							revert : 1000
-						});
-					}
-				});
-			}else{ // END if player1. BEGIN if player2
-
-				$('.field').each(function(index , element){
-					var  field = $(element);
-					if(field.hasClass('ui-sortable')){
-						field.css('border' , 'none').sortable('destroy');
-					}
-				});
-
-				$('.field:has(.player2)').each(function(index , element){
-					var field = $(element);
-
-					// вычисляем поля, на которые может сходить игрок
-					var can1 = field.attr('data-fieldid') - Board.bone1_val;					
-					// делаем возможным перемищение фишек по кругу
-					if(can1 < 0){
-						can1 = 24 + can1;
-						if(can1 === 0){
-							can1 = 24;
-						}
-					}
-
-					// если на возможном поле стоят фишки соперника, убираем возможность ставить на них фишки
-					if($('.field[data-fieldid=' + can1 + ']').find('figure').hasClass('player1')){
-						can1 = false;
-					}
-
-					var can2 = field.attr('data-fieldid') - Board.bone2_val;
-					if(can2 < 0){
-						can2 = 24 + can2;
-						if(can2 === 0){
-							can2 = 24;
-						}
-					}
-					if($('.field[data-fieldid=' + can2 + ']').find('figure').hasClass('player1')){
-						can2 = false;
-					}
-
-					console.log('data-fieldid: ' + field.attr('data-fieldid') + '; can1=' + can1 + '; can2=' + can2);
-					console.log('bone1=' + Board.bone1_val + '; bone2=' + Board.bone2_val);
-
-					// переменная будет хранить строку, в которой указано - с какими полями может коннектиться поле
-					var canConnect = '';
-
-					// вычесленные поля делаем активными
-					if(can1){
-						$('.field[data-fieldid=' + can1 + ']').css('border' , '1px dashed #543125').sortable();
-						canConnect = '.field[data-fieldid=' + can1 + ']';
-					}
-					if(can2){
-						$('.field[data-fieldid=' + can2 + ']').css('border' , '1px solid #543125').sortable();
-						if(can1){
-							canConnect += ' , .field[data-fieldid=' + can2 + ']';
-						}else{
-							canConnect += '.field[data-fieldid=' + can2 + ']';
-						}
-					}
-
-					// перебираемые поля с фишками игрока делаем так же активными
-					// условие делает активными - только крайние фишки
-					if(field.hasClass('top_field')){
-						field.sortable({
-							connectWith : canConnect ,
-							containment : '#main_board_table_board' ,
-							items		: 'figure:last' ,
-							revert : 1000
-						});
-					}else{
-						field.sortable({
-							connectWith : canConnect ,
-							containment : '#main_board_table_board' ,
-							items		: 'figure:first' ,
-							revert : 1000
-						});
-					}
-
-				});
-				
+				activation(1 , 2);
+			}else{ // END if player1. BEGIN if player2				
+				activation(2 , 1);
 			}
 		} ,
 
