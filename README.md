@@ -1,4 +1,4 @@
 backgammon
 ==========
 
-Backgammon game.
+Backgammon game
